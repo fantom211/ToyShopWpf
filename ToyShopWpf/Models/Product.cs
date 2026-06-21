@@ -55,4 +55,23 @@ public partial class Product
             return (Brush)new BrushConverter().ConvertFromString("#F5DEB3");
         }
     }
+
+    [NotMapped]
+    public string PhotoSource
+    {
+        get => (string.IsNullOrEmpty(Photo) || Photo == "") ? "/Res/picture.png" : Photo;
+    }
+
+    [NotMapped]
+    public decimal DiscountPrice
+    {
+        get
+        {
+            if (!Discount.HasValue || Discount == 0)
+            {
+                return Price;
+            }
+            return Price * (1 - Discount.Value / 100);
+        }
+    }
 }

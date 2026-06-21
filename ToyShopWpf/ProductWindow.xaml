@@ -32,7 +32,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Border Grid.Column="0" Width="80" Height="80" Margin="15 0">
-                                    <Image Source="{Binding Photo}"/>
+                                    <Image Source="{Binding PhotoSource}"/>
                                 </Border>
                                 <StackPanel Grid.Column="1">
                                     <TextBlock FontWeight="SemiBold">
@@ -45,7 +45,11 @@
                                     <TextBlock Text="{Binding Creator.Name}"/>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Цена: "/>
-                                        <TextBlock Text="{Binding Price}"/>
+                                        <TextBlock Text="{Binding DiscountPrice}"/>
+                                        <TextBlock Text="     "/>
+                                        <TextBlock Text="{Binding Price}"
+                                                   Foreground="Red"
+                                                   TextDecorations="Strikethrough"/>
                                     </StackPanel>
                                     <TextBlock>
                                         <Run Text="{Binding AmountInStock}"/>
