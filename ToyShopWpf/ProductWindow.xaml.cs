@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ToyShopWpf.Helpers;
 using ToyShopWpf.Models;
 
 namespace ToyShopWpf
@@ -29,17 +30,15 @@ namespace ToyShopWpf
             {
                 Close();
             };
-        }
 
-        public ProductWindow(User user)
-        {
-            InitializeComponent();
-            ProductViewModel vm = new ProductViewModel();
-            DataContext = vm;
-            vm.CloseAction = result =>
+            if(CurrentSession.CurrentUser.RoleId==3 || CurrentSession.CurrentUser==null) 
+                AdminPanel.Visibility = Visibility.Collapsed;
+
+            else if (CurrentSession.CurrentUser.RoleId==1)
             {
-                Close();
-            };
+                AddButton.Visibility = Visibility.Visible;
+                EditButton.Visibility = Visibility.Visible;
+            }    
         }
     }
 }

@@ -36,7 +36,7 @@ namespace ToyShopWpf
             else
             {
                 CurrentSession.CurrentUser = user;
-                new ProductWindow(user).Show();
+                new ProductWindow().Show();
                 CloseAction?.Invoke(true);
             }
         }

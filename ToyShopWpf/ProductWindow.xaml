@@ -8,19 +8,43 @@
         Title="Продукты" Height="800" Width="1200">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
+        <Grid HorizontalAlignment="Left"
+              Name="AdminPanel">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Margin="20 0" Grid.Column="0">
+                <TextBlock Text="Поиск"/>
+                <TextBox Text="{Binding SearchingProduct, UpdateSourceTrigger=PropertyChanged}"
+                         Width="200"/>
+            </StackPanel>
+            <StackPanel Margin="20 0" Grid.Column="1">
+                <TextBlock Text="Сортировка"/>
+                <ComboBox ItemsSource="{Binding SortingTypes}" SelectedItem="{Binding SelectedSort, UpdateSourceTrigger=PropertyChanged}"  Width="200"/>
+            </StackPanel>
+            <StackPanel Margin="20 0" Grid.Column="2">
+                <TextBlock Text="Фильтрация"/>
+                <ComboBox ItemsSource="{Binding FilteringTypes}" SelectedItem="{Binding SelectedFilter, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+            </StackPanel>
+            
+        </Grid>
+        
         <TextBlock Text="{Binding UserFullName}"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Right"
                    Margin="20 10"/>
 
         <ScrollViewer Grid.Row="1">
-            <ItemsControl ItemsSource="{Binding Products}">
-                <ItemsControl.ItemTemplate>
+            <ListBox Name="ProductsListBox" ItemsSource="{Binding ProductsView}" SelectedItem="{Binding SelectedItem}">
+                <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border Margin="10"
                                 Background="{Binding Background}">
@@ -63,8 +87,8 @@
                             </Grid>
                         </Border>
                     </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </ScrollViewer>
 
         <Button Command="{Binding LogOutCommand}"
@@ -72,6 +96,23 @@
                 Grid.Row="2"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
+                />
+        <Button Name="AddButton"
+                Command="{Binding AddProductCommand}"
+                Content="Создать"
+                Grid.Row="2"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Visibility="Collapsed"
+                />
+        <Button Name="EditButton"
+                Command="{Binding EditProductCommand}"
+                Content="Редактировать"
+                Grid.Row="2"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Visibility="Collapsed"
+                Margin="100 0"
                 />
 
     </Grid>
