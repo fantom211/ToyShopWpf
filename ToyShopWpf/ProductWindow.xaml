@@ -42,47 +42,147 @@
                    HorizontalAlignment="Right"
                    Margin="20 10"/>
 
-        <ScrollViewer Grid.Row="1">
-            <ListBox Name="ProductsListBox" ItemsSource="{Binding ProductsView}" SelectedItem="{Binding SelectedItem}">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ListBox Name="ProductsListBox"
+             ItemsSource="{Binding ProductsView}"
+             SelectedItem="{Binding SelectedItem}"
+             BorderThickness="0"
+             Background="Transparent"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0,0,0,8"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border Background="{TemplateBinding Background}"
+                            BorderThickness="0"
+                            CornerRadius="6"
+                            Padding="0"
+                            SnapsToDevicePixels="True">
+                                        <ContentPresenter/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Margin="10"
-                                Background="{Binding Background}">
+                        <Border x:Name="CardBorder"
+                Margin="4"
+                CornerRadius="6"
+                Padding="12"
+                BorderThickness="1">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="{Binding Background}"/>
+                                    <Setter Property="BorderBrush" Value="#E6E6E6"/>
+                                    <Style.Triggers>
+                                        <!-- Наведение -->
+                                        <DataTrigger Binding="{Binding IsMouseOver,
+                            RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                            Value="True">
+                                            <Setter Property="Background" Value="#FFCC80"/>
+                                            <Setter Property="BorderBrush" Value="#FB8C00"/>
+                                        </DataTrigger>
+                                        <!-- Выбор (перебивает наведение — идёт ниже) -->
+                                        <DataTrigger Binding="{Binding IsSelected,
+                            RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                            Value="True">
+                                            <Setter Property="Background" Value="#BDBDBD"/>
+                                            <Setter Property="BorderBrush" Value="#9E9E9E"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="80"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Border Grid.Column="0" Width="80" Height="80" Margin="15 0">
-                                    <Image Source="{Binding PhotoSource}"/>
+                                <!-- Фото -->
+                                <Border Grid.Column="0"
+                        Width="90" Height="90"
+                        Background="White"
+                        CornerRadius="4"
+                        BorderBrush="#DDD" BorderThickness="1"
+                        VerticalAlignment="Top">
+                                    <Image Source="{Binding PhotoSource}" Stretch="Uniform" Margin="4"/>
                                 </Border>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock FontWeight="SemiBold">
-                                        <Run Text="{Binding Category.Name}"/>
-                                        <Run Text=" | "/>
-                                        <Run Text="{Binding Name}"/>
+
+                                <!-- Основная информация -->
+                                <StackPanel Grid.Column="1"
+                            Margin="14,0,12,0"
+                            VerticalAlignment="Center">
+
+                                    <TextBlock FontWeight="SemiBold" FontSize="14"
+                               Foreground="#222222"
+                               TextTrimming="CharacterEllipsis">
+                        <Run Text="{Binding Category.Name, Mode=OneWay}"/>
+                        <Run Text=" | " Foreground="#888888"/>
+                        <Run Text="{Binding Name, Mode=OneWay}"/>
                                     </TextBlock>
-                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
-                                    <TextBlock Text="{Binding Provider.Name}"/>
-                                    <TextBlock Text="{Binding Creator.Name}"/>
+
+                                    <TextBlock Text="{Binding Description}"
+                               TextWrapping="Wrap"
+                               Foreground="#333333"
+                               FontSize="12"
+                               MaxHeight="34"
+                               TextTrimming="CharacterEllipsis"
+                               Margin="0,4,0,6"/>
+
+                                    <Grid Margin="0,0,0,6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" FontSize="12" Foreground="#333333">
+                            <Run Text="Поставщик: " Foreground="#777777"/>
+                            <Run Text="{Binding Provider.Name, Mode=OneWay}"/>
+                                        </TextBlock>
+                                        <TextBlock Grid.Column="1" FontSize="12" Foreground="#333333">
+                            <Run Text="Производитель: " Foreground="#777777"/>
+                            <Run Text="{Binding Creator.Name, Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </Grid>
+
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Цена: "/>
-                                        <TextBlock Text="{Binding DiscountPrice}"/>
-                                        <TextBlock Text="     "/>
+                                        <TextBlock Text="Цена: " FontSize="12" Foreground="#777777"
+                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding DiscountPrice}"
+                                   FontWeight="SemiBold"
+                                   FontSize="14"
+                                   Foreground="#2E7D32"
+                                   VerticalAlignment="Center"/>
                                         <TextBlock Text="{Binding Price}"
-                                                   Foreground="Red"
-                                                   TextDecorations="Strikethrough"/>
+                                   Foreground="#C62828"
+                                   FontSize="12"
+                                   TextDecorations="Strikethrough"
+                                   Margin="10,0,0,0"
+                                   VerticalAlignment="Center"/>
                                     </StackPanel>
-                                    <TextBlock>
-                                        <Run Text="{Binding AmountInStock}"/>
-                                        <Run Text=" "/>
-                                        <Run Text="{Binding Unit.Name}"/>
-                                    </TextBlock> 
+
+                                    <TextBlock Margin="0,4,0,0" FontSize="12" Foreground="#333333">
+                        <Run Text="В наличии: " Foreground="#777777"/>
+                        <Run Text="{Binding AmountInStock, Mode=OneWay}"/>
+                        <Run Text=" "/>
+                        <Run Text="{Binding Unit.Name, Mode=OneWay}"/>
+                                    </TextBlock>
                                 </StackPanel>
-                                <Border Grid.Column="2">
-                                    <TextBlock Text="{Binding Discount}"/>
+
+                                <Border Grid.Column="2"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Discount}"
+                               Foreground="#222222"
+                               FontWeight="SemiBold"/>
                                 </Border>
                             </Grid>
                         </Border>
